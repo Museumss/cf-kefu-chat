@@ -9,22 +9,15 @@ function setConv(id) {
   if (id) {
     pull(true).catch((e) => toast(e.message));
     startPolling();
-    setTimeout(() => {
-      messages.push({
-        id: "welcome-msg",
-        convId: convId,
-        sender: "agent",
-        senderName: "客服",
-        type: "text",
-        body: "👋 您好！欢迎来到在线客服，请问有什么可以帮您？",
-        fileKey: "",
-        fileSize: 0,
-        status: "active",
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-        readAt: null
-      });
-      render(true);
+    setTimeout(async () => {
+      try {
+        await api('/api/messages', {
+          method: 'POST',
+          body: { conv: convId, type: 'text', body: "#welcome" },
+        });
+      } catch (err) {
+        console.log('欢迎消息触发失败', err);
+      }
     }, 700);
   } else {
     stopPolling();
