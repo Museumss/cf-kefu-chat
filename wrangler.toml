@@ -1,4 +1,4 @@
-name = "cf-kefu-chat"
+name = "kefu1-chat"
 main = "src/index.js"
 compatibility_date = "2025-04-01"
 workers_dev = true
@@ -16,8 +16,8 @@ enabled = true
 # D1 数据库：先执行 wrangler d1 create cf_kefu 拿到 database_id 填到这里
 [[d1_databases]]
 binding = "DB"
-database_name = "cf_kefu"
-database_id = "75089c2f-db3a-4243-8d32-7349e0970c01"
+database_name = "cf_kefu1"
+database_id = "71b19b11-c181-485f-9d68-ff6b31b2950f"
 migrations_dir = "migrations"
 
 # R2 对象存储：先执行 wrangler r2 bucket create cf-kefu-files
