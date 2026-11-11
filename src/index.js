@@ -324,7 +324,38 @@ const mapMessage = (row) => ({
   readAt: row.read_at || 0,
 });
 
+
 async function handleSendMessage(request, env, url) {
+  // ===== 新增：欢迎指令判断 开始 =====
+  const body = await safeBody(request);
+  if (body.body === "#welcome") {
+    return json({
+      message: {
+        id: uid(16),
+        convId: "",
+        sender: "agent",
+        senderName: env.AGENT_NAME || "客服",
+        type: "text",
+        body: "👋 您好！欢迎来到在线客服，请问有什么可以帮您？",
+        fileKey: "",
+        fileSize: 0,
+        status: "active",
+        createdAt: now(),
+        updatedAt: now(),
+        readAt: null
+      }
+    })
+  }
+  // ===== 新增结束 =====
+
+  const ident = await identify(request, env);
+  if (!ident) return fail('未登录', 401, 'unauthorized');
+
+  // 下面原来所有代码不动，保留原样
+  const body = await safeBody(request);
+  const convId = await resolveConvId(request, ident, url, body);
+  ……
+
   const ident = await identify(request, env);
   if (!ident) return fail('未登录', 401, 'unauthorized');
 
