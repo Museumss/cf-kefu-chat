@@ -551,6 +551,21 @@ export function createChatHost(opts) {
       startPolling();
     } else {
       stopPolling();
+  // ========== 新增：会话就绪，自动触发欢迎消息 ==========
+  setTimeout(async () => {
+    try {
+      await api('/api/messages', {
+        method: 'POST',
+        body: { conv: convId, type: 'text', body: "#welcome" },
+      });
+    } catch (err) {
+      console.log('欢迎消息触发失败', err);
+    }
+  }, 700);
+  // ======================================================
+} else {
+  stopPolling();
+}
     }
   }
 
