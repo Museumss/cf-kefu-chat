@@ -8,7 +8,7 @@ workers_dev = true
 SHOP_NAME = "在线客服"
 MAX_IMAGE_MB = "5"
 RECALL_WINDOW_SEC = "120"
-AGENT_NAME = "客服小蒙"
+AGENT_NAME = "客服小旗"
 
 [observability]
 enabled = true
