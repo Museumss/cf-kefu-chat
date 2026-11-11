@@ -332,7 +332,7 @@ async function handleSendMessage(request, env, url) {
     return json({
       message: {
         id: uid(16),
-        convId: "",
+        convId: body.conv,
         sender: "agent",
         senderName: env.AGENT_NAME || "客服",
         type: "text",
@@ -346,7 +346,14 @@ async function handleSendMessage(request, env, url) {
       }
     })
   }
-  // ===== 新增结束 =====
+  // ===== 新增：欢迎指令判断 结束 =====
+
+  const ident = await identify(request, env);
+  if (!ident) return fail('未登录', 401, 'unauthorized');
+
+  const convId = await resolveConvId(request, ident, url, body);
+  // -------- 下面你原来剩下所有代码保持原样不动 --------
+
 
   const ident = await identify(request, env);
   if (!ident) return fail('未登录', 401, 'unauthorized');
