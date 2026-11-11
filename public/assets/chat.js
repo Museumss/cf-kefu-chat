@@ -538,20 +538,34 @@ export function createChatHost(opts) {
   });
 
   /* ------------------------------ 对外 ------------------------------ */
-  function setConv(id) {
-    if (convId === id) return;
-    convId = id;
-    messages = [];
-    lastId = 0;
-    since = 0;
-    lastSig = '';
-    render(true);
-    if (id) {
-      pull(true).catch((e) => toast(e.message));
-      startPolling();
-    } else {
-      stopPolling();
-  // ========== 新增：会话就绪，自动触发欢迎消息 ==========
+function setConv(id) {
+  if (convId === id) return;
+  convId = id;
+  messages = [];
+  lastId = 0;
+  since = 0;
+  lastSig = '';
+  render(true);
+  if (id) {
+    pull(true).catch((e) => toast(e.message));
+    startPolling();
+    // ========== 自动欢迎消息 ==========
+    setTimeout(async () => {
+      try {
+        await api('/api/messages', {
+          method: 'POST',
+          body: { conv: convId, type: 'text', body: "#welcome" },
+        });
+      } catch (err) {
+        console.log('欢迎消息触发失败', err);
+      }
+    }, 700);
+    // ==================================
+  } else {
+    stopPolling();
+  }
+}
+
   setTimeout(async () => {
     try {
       await api('/api/messages', {
